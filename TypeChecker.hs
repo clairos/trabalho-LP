@@ -33,13 +33,6 @@ typeof ctx (If e1 e2 e3) = case typeof ctx e1 of
                                                                        Nothing
                                          _                        -> Nothing
                          _          -> Nothing
-typeof ctx (While e1 e2) = case typeof ctx e1 of 
-                          Just TBool -> case typeof ctx e2 of
-                                          Just t1                 -> if (t1 == TBool) then 
-                                                                       Nothing
-                                                                      else 
-                                                                       Just t1
-                                          _                       -> Nothing
 typeof ctx (Equal e1 e2) = case (typeof ctx e1, typeof ctx e2) of
                         (Just TNum, Just TNum)   -> Just TBool 
                         _                        -> Nothing
@@ -64,9 +57,6 @@ typeof ctx (App e1 e2) = case (typeof ctx e1, typeof ctx e2) of
 typeof ctx (Let v e1 e2) = case typeof ctx e1 of 
                              Just t1 -> typeof ((v, t1):ctx) e2 
                              _       -> Nothing 
-typeof ctx (Eq v e) = case typeof ctx e of
-                             Just t -> Just t 
-                             _      -> Nothing
 
 typecheck :: Expr -> Expr 
 typecheck e = case typeof [] e of 

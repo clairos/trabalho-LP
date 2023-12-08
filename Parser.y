@@ -23,7 +23,6 @@ import Lexer
     true        { TokenTrue }
     false       { TokenFalse }
     if          { TokenIf }
-    while       { TokenWhile }
     then        { TokenThen }
     else        { TokenElse }
     var         { TokenVar $$ }
@@ -43,7 +42,6 @@ import Lexer
 Exp         : num                           { Num $1 }
             | true                          { BTrue }
             | false                         { BFalse }
-            | var '=' Exp                   { Eq $1 $3}
             | Exp '+' Exp                   { Add $1 $3 }
             | Exp '-' Exp                   { Sub $1 $3 }
             | Exp '*' Exp                   { Mul $1 $3 }
@@ -53,7 +51,6 @@ Exp         : num                           { Num $1 }
             | Exp '&&' Exp                  { And $1 $3 }
             | Exp '||' Exp                  { Or $1 $3 }
             | if Exp then Exp else Exp      { If $2 $4 $6 }
-            | while Exp Exp                 { While $2 $3 }
             | var                           { Var $1 }
             | '\\' var ':' Type '->' Exp    { Lam $2 $4 $6 }
             | Exp Exp                       { App $1 $2 }

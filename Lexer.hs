@@ -5,7 +5,6 @@ import Data.Char
 data Expr = BTrue
           | BFalse 
           | Num Int 
-          | Eq String Expr
           | Add Expr Expr 
           | Sub Expr Expr
           | Mul Expr Expr
@@ -20,7 +19,6 @@ data Expr = BTrue
           | App Expr Expr
           | Paren Expr
           | Let String Expr Expr 
-          | While Expr Expr
           deriving Show
 
 data Ty = TBool 
@@ -53,7 +51,6 @@ data Token = TokenTrue
            | TokenColon
            | TokenBoolean 
            | TokenNumber
-           | TokenWhile
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
@@ -100,7 +97,6 @@ lexKW cs = case span isAlpha cs of
              ("in", rest) -> TokenIn : lexer rest 
              ("Num", rest) -> TokenNumber : lexer rest 
              ("Bool", rest) -> TokenBoolean : lexer rest 
-             ("while", rest) -> TokenWhile : lexer rest
              (var, rest) -> TokenVar var : lexer rest 
 
 
