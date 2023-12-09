@@ -28,6 +28,8 @@ subst x n (Less e1 e2) = Less (subst x n e1) (subst x n e2)
 subst x n (If e1 e2 e3) = If (subst x n e1) (subst x n e2) (subst x n e3)
 subst x n (Paren e) = Paren (subst x n e)
 subst x n (Let v e1 e2) = Let v (subst x n e1) (subst x n e2)
+subst x n (Tuple e1 e2) = Tuple (subst x n e1) (subst x n e2)
+subst x n (Tuple3 e1 e2 e3) = Tuple3 (subst x n e1) (subst x n e2) (subst x n e3)
 subst x n e = error (show e)
 
 step :: Expr -> Expr
@@ -67,6 +69,7 @@ step (App (Lam x t b) e2) | isValue e2 = subst x e2 b
 step (App e1 e2) = App (step e1) e2
 step (Let v e1 e2) | isValue e1 = subst v e1 e2
                    | otherwise = Let v (step e1) e2
+step (Tuple e1 e2) = Tuple (step e1) (step e2)
 step e = error (show e)
 
 eval :: Expr -> Expr
