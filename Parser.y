@@ -59,8 +59,8 @@ Exp         : num                            { Num $1 }
             | Exp Exp                        { App $1 $2 }
             | '(' Exp ')'                    { Paren $2 }
             | let var '=' Exp in Exp         { Let $2 $4 $6 }
-            | '(' Expr ',' Expr ')'          { Tuple $2 $4 }
-            | '(' Expr ',' Expr ',' Expr ')' { Tuple3 $2 $4 $6 }
+            -- | '(' Exp ',' Exp ')'            { Tuple $2 $4 }
+            -- | '(' Exp ',' Exp ',' Exp ')'    { Tuple3 $2 $4 $6 }
 
 Type    : Bool                              { TBool }
         | Num                               { TNum }

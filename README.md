@@ -1,24 +1,20 @@
-Codigo Fonte
+## Trabalho final LP 
 
-Sintática:
+Interpretador de uma Tupla
 
-    - Léxica: String -> [token]
-    - Sintática: (Happy) [token] -> Expr
- 
-Semântica:
+# *Como rodar o projeto*
 
-    - Verificação de tipos:
-    - Avaliação:
+- Primeiramente é necessário compilar o parser.y utilizando o happy:
+    ```
+     > happy Parser.y
+    ```
 
--------------------------------------------------------------
-
-Sintaxe concreta: o código que o programador escreve
-Sintaxe abstrata: representação interna da sintaxe (Expr)
-
--------------------------------------------------------------
-TERMINAL:
-
-echo "if true then 2 else 5" | runghc Main  --> codigo direto no terminal
-
-cat example.mylang | runghc Main.hs --> codigo utilizando o arquivo example.mylang
-
+- Para rodar o código utilizando os arquivos .mylang:
+    ```
+     > cat example.mylang | runghc Main.hs 
+    ```
+    
+- Para rodar o código direto no terminal:
+    ```
+     > echo "if true then 2 else 5"  runghc Main 
+    ```
