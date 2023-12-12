@@ -57,9 +57,17 @@ typeof ctx (App e1 e2) = case (typeof ctx e1, typeof ctx e2) of
 typeof ctx (Let v e1 e2) = case typeof ctx e1 of 
                              Just t1 -> typeof ((v, t1):ctx) e2 
                              _       -> Nothing 
--- typeof ctx (Tuple e1 e2) = case typeof ctx e1 of
+-- typeof ctx (Tuple e1 e2) = case typeof ctx e1 of  -- faltou tipo ???????? 
 --                              Just t1 -> typeof ((t1):ctx) e2
 --                              _       -> Nothing
+
+typeof ctx (Tuple t e1 e2) = case typeof ctx e1 of
+                              Just t1 -> if t == t1 
+                                           then case typeof ctx e2 of 
+                                              Just (TTuple t2) -> Just (TTuple t)
+                                              Nothing -> Nothing 
+                                           else Nothing
+                              _ -> Nothing
 
 typecheck :: Expr -> Expr 
 typecheck e = case typeof [] e of 

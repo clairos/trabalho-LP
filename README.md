@@ -1,8 +1,8 @@
-## Trabalho final LP 
+# Trabalho final LP 
 
 Interpretador de uma Tupla
 
-# *Como rodar o projeto*
+## *Como rodar o projeto* 
 
 - Primeiramente é necessário compilar o parser.y utilizando o happy:
     ```
@@ -13,7 +13,7 @@ Interpretador de uma Tupla
     ```
      > cat example.mylang | runghc Main.hs 
     ```
-    
+
 - Para rodar o código direto no terminal:
     ```
      > echo "if true then 2 else 5"  runghc Main 

@@ -19,12 +19,16 @@ data Expr = BTrue
           | App Expr Expr
           | Paren Expr
           | Let String Expr Expr 
-          | Tuple Expr Expr
-          | Tuple3 Expr Expr Expr
+          | Tuple Ty Expr Expr
+          | Nil Ty 
+          | IsNil Ty Expr 
+          | Head Ty Expr 
+          | Tail Ty Expr
           deriving Show
 
 data Ty = TBool 
         | TNum 
+        | TTuple Ty
         | TFun Ty Ty
         deriving (Show, Eq)
 
@@ -54,12 +58,15 @@ data Token = TokenTrue
            | TokenBoolean 
            | TokenNumber
            | TokenTuple
-           | TokenTuple3
-           | TokenComma 
+           | TokenNil
+           | TokenHead 
+           | TokenTail
+           | TokenIsNill
+           | TokenParens 
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
-isSymb c = c `elem` "+&\\-><()=:-*|,"
+isSymb c = c `elem` "+&\\-><()=:-*|"
 
 lexer :: String -> [Token]
 lexer [] = [] 
@@ -89,7 +96,7 @@ lexSymbol cs = case span isSymb cs of
                  (">", rest) -> TokenGreat : lexer rest
                  ("<", rest) -> TokenLess : lexer rest
                  ("||", rest) -> TokenOr : lexer rest
-                 (",", rest) -> TokenComma : lexer rest
+                 ("()", rest) -> TokenParens : lexer rest
                  _ -> error "Lexical error: invalid symbol!"
 
 lexKW :: String -> [Token]
@@ -104,7 +111,10 @@ lexKW cs = case span isAlpha cs of
              ("Num", rest) -> TokenNumber : lexer rest 
              ("Bool", rest) -> TokenBoolean : lexer rest 
              ("Tuple", rest) -> TokenTuple : lexer rest 
-             ("Tuple3", rest) -> TokenTuple : lexer rest 
+             ("Head", rest) -> TokenHead : lexer rest 
+             ("Tail", rest) -> TokenTail : lexer rest
+             ("Nil", rest) -> TokenNil : lexer rest
+             ("IsNil", rest) -> TokenIsNil : lexer rest
              (var, rest) -> TokenVar var : lexer rest 
 
 

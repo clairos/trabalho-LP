@@ -8,7 +8,10 @@ import Lexer
 %tokentype { Token }
 %error { parserError } 
 
-%left '+'
+%left '+' '-'
+%left '*'
+%left '&&' '||'
+%left '>'
 
 %token 
     num         { TokenNum $$ }
@@ -37,8 +40,11 @@ import Lexer
     Num         { TokenNumber }
     ':'         { TokenColon }
     Tuple       { TokenTuple }
-    Tuple3      { TokenTuple3 }
-    ','         { TokenComma }
+    '()'        { TokenParens }
+    Head        { TokenHead }
+    Tail        { TokenTail }
+    Nil         { TokenNil }
+    IsNil       { TokenIsNil }
 
 %%
 
@@ -59,12 +65,17 @@ Exp         : num                            { Num $1 }
             | Exp Exp                        { App $1 $2 }
             | '(' Exp ')'                    { Paren $2 }
             | let var '=' Exp in Exp         { Let $2 $4 $6 }
-            -- | '(' Exp ',' Exp ')'            { Tuple $2 $4 }
-            -- | '(' Exp ',' Exp ',' Exp ')'    { Tuple3 $2 $4 $6 }
+            | Tuple Type '()'                { Nil $2}
+            | Tuple Type Exp ':' '()'        { Tuple $2 $3 (Nil $2) }
+            | Tuple Type Exp ':' Exp         { Tuple $2 $3 $5 } 
+            | Head Type Exp                  { Head $2 $3 }
+            | Tail Type Exp                  { Tail $2 $3 }
+            | IsNil Type Exp                 { IsNil $2 $3 }
 
 Type    : Bool                              { TBool }
         | Num                               { TNum }
         | '(' Type '->' Type ')'            { TFun $2 $4 }
+        | Tuple Type                        { TTuple $2 }
 
 
 {
