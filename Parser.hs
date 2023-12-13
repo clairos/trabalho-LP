@@ -22,7 +22,7 @@ happyExpList = Happy_Data_Array.listArray (0,402) ([49184,16985,1035,0,0,0,0,655
 {-# NOINLINE happyExpListPerState #-}
 happyExpListPerState st =
     token_strs_expected
-  where token_strs = ["error","%dummy","%start_parser","Exp","Type","num","'+'","'-'","'*'","'=='","'>'","'<'","'&&'","'||'","true","false","if","then","else","var","'\\\\'","'->'","'('","')'","'='","let","in","Bool","Num","':'","Tuple","'()'","Head","Tail","Nil","IsNil","%eof"]
+  where token_strs = ["error","%dummy","%start_parser","Exp","Type","num","'+'","'-'","'*'","'=='","'>'","'<'","'&&'","'||'","true","false","if","then","else","var","'\\\\'","'->'","'('","')'","'='","let","in","Bool","Num","':'","Tuple","'()'","Head","Tail","Emp","IsEmp","%eof"]
         bit_start = st Prelude.* 37
         bit_end = (st Prelude.+ 1) Prelude.* 37
         read_bit = readArrayBit happyExpList
@@ -1096,7 +1096,7 @@ happyReduction_18 _
 	(HappyAbsSyn5  happy_var_2)
 	_
 	 =  HappyAbsSyn4
-		 (Nil happy_var_2
+		 (Emp happy_var_2
 	)
 happyReduction_18 _ _ _  = notHappyAtAll 
 
@@ -1108,7 +1108,7 @@ happyReduction_19 (_ `HappyStk`
 	_ `HappyStk`
 	happyRest)
 	 = HappyAbsSyn4
-		 (Tuple happy_var_2 happy_var_3 (Nil happy_var_2)
+		 (Tuple happy_var_2 happy_var_3 (Emp happy_var_2)
 	) `HappyStk` happyRest
 
 happyReduce_20 = happyReduce 5 4 happyReduction_20
@@ -1145,7 +1145,7 @@ happyReduction_23 (HappyAbsSyn4  happy_var_3)
 	(HappyAbsSyn5  happy_var_2)
 	_
 	 =  HappyAbsSyn4
-		 (IsNil happy_var_2 happy_var_3
+		 (IsEmp happy_var_2 happy_var_3
 	)
 happyReduction_23 _ _ _  = notHappyAtAll 
 
@@ -1215,8 +1215,8 @@ happyNewToken action sts stk (tk:tks) =
 	TokenParens -> cont 32;
 	TokenHead -> cont 33;
 	TokenTail -> cont 34;
-	TokenNil -> cont 35;
-	TokenIsNil -> cont 36;
+	TokenEmp -> cont 35;
+	TokenIsEmp -> cont 36;
 	_ -> happyError' ((tk:tks), [])
 	}
 

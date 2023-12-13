@@ -20,8 +20,8 @@ data Expr = BTrue
           | Paren Expr
           | Let String Expr Expr 
           | Tuple Ty Expr Expr
-          | Nil Ty 
-          | IsNil Ty Expr 
+          | Emp Ty 
+          | IsEmp Ty Expr 
           | Head Ty Expr 
           | Tail Ty Expr
           deriving Show
@@ -58,10 +58,10 @@ data Token = TokenTrue
            | TokenBoolean 
            | TokenNumber
            | TokenTuple
-           | TokenNil
+           | TokenEmp
            | TokenHead 
            | TokenTail
-           | TokenIsNill
+           | TokenIsEmp
            | TokenParens 
            deriving (Show, Eq)
 
@@ -113,8 +113,8 @@ lexKW cs = case span isAlpha cs of
              ("Tuple", rest) -> TokenTuple : lexer rest 
              ("Head", rest) -> TokenHead : lexer rest 
              ("Tail", rest) -> TokenTail : lexer rest
-             ("Nil", rest) -> TokenNil : lexer rest
-             ("IsNil", rest) -> TokenIsNil : lexer rest
+             ("Emp", rest) -> TokenEmp : lexer rest
+             ("IsEmp", rest) -> TokenIsEmp : lexer rest
              (var, rest) -> TokenVar var : lexer rest 
 
 
