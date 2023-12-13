@@ -39,6 +39,9 @@ subst x n (Let v e1 e2) = Let v (subst x n e1) (subst x n e2)
 subst x n (Paren e) = Paren (subst x n e)
 
 subst x n (Tuple t1 e1 e2) = Tuple t1 (subst x n e1) (subst x n e2)
+subst x n (Head t1 e1) = Head t1 (subst x n e1)
+subst x n (Tail t1 e1) = Tail t1 (subst x n e1)
+subst x n (IsEmp t1 e1) = IsEmp t1 (subst x n e1)
 
 subst x n e = error (show e)
 
@@ -93,6 +96,18 @@ step (Let v e1 e2) | isValue e1 = subst v e1 e2
 
 step (Tuple t e1 e2) | isValue e1 = Tuple t e1 (step e2)
                      | otherwise = Tuple t (step e1) e2
+
+step (IsEmp s (Emp t)) = BTrue 
+step (IsEmp s (Tuple t _ _)) = BFalse 
+step (IsEmp s e) = isEmp s (step e)
+
+step (Head s (Emp t)) = error "The tuple is empty!"
+step (Head s (Tuple t e1 e2)) = e1
+step (Head s e1) = Head s (step e1)
+
+step (Tail s (Emp t)) = error "The tuple is empty!"
+step (Tail s (Tuple t e1 e2)) = e2
+step (Tail s e1) = Tail s (step e1)
 
 step e = error (show e)
 

@@ -75,6 +75,26 @@ typeof ctx (Tuple t e1 e2) = case typeof ctx e1 of
                                            else Nothing
                               _ -> Nothing
 
+typeof ctx (Emp t) = Just (TTuple t)
+
+typeof ctx (IsEmp t e1) = case typeof ctx e1 of 
+                              Just t1 -> if t1 == (TTuple t)
+                                           then Just TBool 
+                                           else Nothin
+                              _ -> Nothing
+
+typeof ctx (Head t e1) = case typeof ctx e1 of 
+                              Just t1 -> if t1 == (TTuple t)
+                                           then Just TBool 
+                                           else Nothing
+                              _ -> Nothing
+
+typeof ctx (Tail t e1) = case typeof ctx e1 of 
+                              Just t1 -> if t1 == (TTuple t)
+                                           then Just TBool 
+                                           else Nothing
+                              _ -> Nothing
+
 typecheck :: Expr -> Expr 
 typecheck e = case typeof [] e of 
                 Just _ -> e 
