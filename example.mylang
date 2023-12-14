@@ -1,2 +1,1 @@
-Tuple (1, 2, 'a')
-Tuple (1, 2, 'a').1 
+let x = Tuple Num 1 : Tuple Num () in Tail Num x

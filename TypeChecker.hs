@@ -80,7 +80,7 @@ typeof ctx (Emp t) = Just (TTuple t)
 typeof ctx (IsEmp t e1) = case typeof ctx e1 of 
                               Just t1 -> if t1 == (TTuple t)
                                            then Just TBool 
-                                           else Nothin
+                                           else Nothing
                               _ -> Nothing
 
 typeof ctx (Head t e1) = case typeof ctx e1 of 

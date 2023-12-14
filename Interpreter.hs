@@ -9,6 +9,7 @@ isValue BFalse = True
 isValue (Num _) = True
 isValue (Lam _ _ _) = True
 isValue (Tuple _ _ _) = True 
+isValue (Emp _) = True
 isValue _ = False
 
 subst :: String -> Expr -> Expr -> Expr
@@ -38,10 +39,10 @@ subst x n (Let v e1 e2) = Let v (subst x n e1) (subst x n e2)
 
 subst x n (Paren e) = Paren (subst x n e)
 
-subst x n (Tuple t1 e1 e2) = Tuple t1 (subst x n e1) (subst x n e2)
-subst x n (Head t1 e1) = Head t1 (subst x n e1)
-subst x n (Tail t1 e1) = Tail t1 (subst x n e1)
-subst x n (IsEmp t1 e1) = IsEmp t1 (subst x n e1)
+subst x n (Tuple n1 e1 e2) = Tuple n1 (subst x n e1) (subst x n e2)
+subst x n (Head n1 e1) = Head n1 (subst x n e1)
+subst x n (Tail n1 e1) = Tail n1 (subst x n e1)
+subst x n (IsEmp n1 e1) = IsEmp n1 (subst x n e1)
 
 subst x n e = error (show e)
 
@@ -94,19 +95,19 @@ step (App e1 e2) = App (step e1) e2
 step (Let v e1 e2) | isValue e1 = subst v e1 e2
                    | otherwise = Let v (step e1) e2
 
-step (Tuple t e1 e2) | isValue e1 = Tuple t e1 (step e2)
-                     | otherwise = Tuple t (step e1) e2
+step (Tuple n e1 e2) | isValue e1 = Tuple n e1 (step e2)
+                     | otherwise = Tuple n (step e1) e2
 
-step (IsEmp s (Emp t)) = BTrue 
-step (IsEmp s (Tuple t _ _)) = BFalse 
-step (IsEmp s e) = isEmp s (step e)
+step (IsEmp s (Emp n)) = BTrue 
+step (IsEmp s (Tuple n _ _)) = BFalse 
+step (IsEmp s e) = IsEmp s (step e)
 
-step (Head s (Emp t)) = error "The tuple is empty!"
-step (Head s (Tuple t e1 e2)) = e1
+step (Head s (Emp n1)) = error "The tuple is empty!"
+step (Head s (Tuple n e1 e2)) = e1
 step (Head s e1) = Head s (step e1)
 
-step (Tail s (Emp t)) = error "The tuple is empty!"
-step (Tail s (Tuple t e1 e2)) = e2
+step (Tail s (Emp n1)) = error "The tuple is empty!"
+step (Tail s (Tuple n e1 e2)) = e2
 step (Tail s e1) = Tail s (step e1)
 
 step e = error (show e)

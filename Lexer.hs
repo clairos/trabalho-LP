@@ -62,7 +62,6 @@ data Token = TokenTrue
            | TokenHead 
            | TokenTail
            | TokenIsEmp
-           | TokenParens 
            deriving (Show, Eq)
 
 isSymb :: Char -> Bool 
@@ -74,7 +73,7 @@ lexer ('(':cs) = TokenLParen : lexer cs
 lexer (')':cs) = TokenRParen : lexer cs
 lexer (c:cs) | isSpace c = lexer cs 
              | isDigit c = lexNum (c:cs)
-             | isSymb c = lexSymbol (c:cs)
+             | isSymb  c = lexSymbol (c:cs)
              | isAlpha c = lexKW (c:cs)
 lexer _ = error "Lexical error!"
 
@@ -96,7 +95,8 @@ lexSymbol cs = case span isSymb cs of
                  (">", rest) -> TokenGreat : lexer rest
                  ("<", rest) -> TokenLess : lexer rest
                  ("||", rest) -> TokenOr : lexer rest
-                 ("()", rest) -> TokenParens : lexer rest
+                 ("(", rest) -> TokenLParen : lexer rest
+                 (")", rest) -> TokenRParen : lexer rest
                  _ -> error "Lexical error: invalid symbol!"
 
 lexKW :: String -> [Token]
