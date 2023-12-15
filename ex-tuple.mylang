@@ -1,1 +1,1 @@
-let x = Tuple Num 7 : Tuple Num () in Head Num x
+let x = Tuple Num 7 : Tuple Num () in Rest Num x

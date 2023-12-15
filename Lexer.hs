@@ -22,8 +22,8 @@ data Expr = BTrue
           | Tuple Ty Expr Expr
           | Emp Ty 
           | IsEmp Ty Expr 
-          | Head Ty Expr 
-          | Tail Ty Expr
+          | First Ty Expr 
+          | Rest Ty Expr
           deriving Show
 
 data Ty = TBool 
@@ -59,8 +59,8 @@ data Token = TokenTrue
            | TokenNumber
            | TokenTuple
            | TokenEmp
-           | TokenHead 
-           | TokenTail
+           | TokenFirst 
+           | TokenRest
            | TokenIsEmp
            deriving (Show, Eq)
 
@@ -111,8 +111,8 @@ lexKW cs = case span isAlpha cs of
              ("Num", rest) -> TokenNumber : lexer rest 
              ("Bool", rest) -> TokenBoolean : lexer rest 
              ("Tuple", rest) -> TokenTuple : lexer rest 
-             ("Head", rest) -> TokenHead : lexer rest 
-             ("Tail", rest) -> TokenTail : lexer rest
+             ("First", rest) -> TokenFirst : lexer rest 
+             ("Rest", rest) -> TokenRest : lexer rest
              ("Emp", rest) -> TokenEmp : lexer rest
              ("IsEmp", rest) -> TokenIsEmp : lexer rest
              (var, rest) -> TokenVar var : lexer rest 

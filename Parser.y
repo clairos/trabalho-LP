@@ -8,10 +8,7 @@ import Lexer
 %tokentype { Token }
 %error { parserError } 
 
-%left '+' '-'
-%left '*'
-%left '&&' '||'
-%left '>'
+%left '+' '-' '*' '==' '>' '<' '&&' '||' 
 
 %token 
     num         { TokenNum $$ }
@@ -40,8 +37,8 @@ import Lexer
     Num         { TokenNumber }
     ':'         { TokenColon }
     Tuple       { TokenTuple }
-    Head        { TokenHead }
-    Tail        { TokenTail }
+    First       { TokenFirst }
+    Rest        { TokenRest }
     Emp         { TokenEmp }
     IsEmp       { TokenIsEmp }
 
@@ -67,8 +64,8 @@ Exp         : num                            { Num $1 }
             | Tuple Type '(' ')'             { Emp $2 }
             | Tuple Type Exp ':' '(' ')'     { Tuple $2 $3 (Emp $2) }
             | Tuple Type Exp ':' Exp         { Tuple $2 $3 $5 } 
-            | Head Type Exp                  { Head $2 $3 }
-            | Tail Type Exp                  { Tail $2 $3 }
+            | First Type Exp                 { First $2 $3 }
+            | Rest Type Exp                  { Rest $2 $3 }
             | IsEmp Type Exp                 { IsEmp $2 $3 }
 
 Type    : Bool                              { TBool }
