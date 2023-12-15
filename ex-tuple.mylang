@@ -1,0 +1,1 @@
+let x = Tuple Num 7 : Tuple Num () in Head Num x

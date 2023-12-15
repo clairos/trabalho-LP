@@ -1,1 +1,0 @@
-let x = Tuple Num 1 : Tuple Num () in Tail Num x
